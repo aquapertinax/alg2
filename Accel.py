@@ -1,23 +1,39 @@
 import sympy as sp
 
-
-# a = acceleration, t = time, vi = initial velocity, vf = final velocity, s = distance
+# 1. Define Symbols
 a, t, vi, vf, s = sp.symbols('a t vi vf s')
 
-# 2. kinematic Equations 
+# 2. Define Kinematic Equations 
 eq1 = sp.Eq(vf, vi + a * t)
 eq2 = sp.Eq(s, vi * t + 0.5 * a * t**2)
 
-# Solve for Acceleration 
-# acceleration needed to reach 100 km/h (27.7 m/s) in 2.6 seconds
+print("--- Kinematic Calculator ---")
 
-f1_data = {vi: 0, vf: 27.7, t: 2.6}
-sol_a = sp.solve(eq1.subs(f1_data), a)
+# 3. Get User Input
+try:
+    v_init = float(input("Enter initial velocity (m/s) [0 for standstill]: "))
+    v_final_kmh = float(input("Enter target final velocity (km/h): "))
+    time_val = float(input("Enter time duration (seconds): "))
 
-print(f"Required Acceleration: {sol_a[0]:.2f} m/s²")
+    # convert km/h to m/s for the calculation
+    v_final_ms = v_final_kmh / 3.6
 
-# Find distance covered 
-dist_covered = sp.solve(eq2.subs(f1_data).subs(a, sol_a[0]), s)
-print(f"Distance traveled in 2.6s: {dist_covered[0]:.2f} meters")
+    # 4. create data dictionary
+    user_data = {vi: v_init, vf: v_final_ms, t: time_val}
 
+    # 5. solve for Acceleration 
+    sol_a = sp.solve(eq1.subs(user_data), a)
+    accel_result = sol_a[0]
+
+    # 6. solve for distance
+    sol_s = sp.solve(eq2.subs(user_data).subs(a, accel_result), s)
+    dist_result = sol_s[0]
+
+    # 7. results
+    print("\n- Results -")
+    print(f"Required Acceleration: {accel_result:.2f} m/s²")
+    print(f"Distance Traveled:     {dist_result:.2f} meters")
+
+except ValueError:
+    print("Invalid input! Please enter numerical values.")
 

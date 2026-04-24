@@ -1,5 +1,5 @@
 #i followed several tutorials to learn how to use customtkinter and sympy, as well as all of the kinematics used were taken from online.  Already had basic python knowdledge.
-
+# error protection copied off offline
 
 
 import customtkinter as ctk
